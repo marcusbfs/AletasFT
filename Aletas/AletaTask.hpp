@@ -8,6 +8,7 @@
 #include <iomanip>
 #include "FunDer.hpp"
 #include "Aletas.hpp"
+#include "quad.hpp"
 
 #define ft_D 0.005
 #define ft_L 0.1
@@ -18,8 +19,11 @@
 #define PI EIGEN_PI
 #define M_PI EIGEN_PI
 
+
 // Class for calcultation of Ac and dAc/dz based on F(z)
 class AletaTaskInput {
+private:
+	const double h = 1e-8;
 public:
 	// Returns F(z)
 	virtual double F(const double& z) = 0;
@@ -27,8 +31,34 @@ public:
 	// Returns dF(z)/dz
 	virtual double dFdz(const double& z) = 0;
 
+	// Returns integrand
+	double m_int(const double& z) {
+		return F(z) * std::sqrt(1.0 + std::pow(dFdz(z), 2));
+	}
+
+	// Returns As(z)
+	virtual double As(const double& z) {
+		double s =
+			c_w1 * (
+				m_int(z * .5 * (c_p1 + 1.0)) +
+				m_int(z * .5 * (-c_p1 + 1.0))
+				) +
+			c_w2 * (
+				m_int(z * .5 * (c_p2 + 1.0)) +
+				m_int(z * .5 * (-c_p2 + 1.0))
+				) +
+			c_w3 * (
+				m_int(z * .5 * (c_p3 + 1.0)) +
+				m_int(z * .5 * (-c_p3 + 1.0))
+				) +
+			c_w0 * m_int(z * .5 * (c_p0 + 1));
+		return s * M_PI * z;
+	}
+
 	// Returns dAs(z)/dz
-	virtual double dAsdz(const double& z) = 0;
+	virtual double dAsdz(const double& z) {
+		return (As(h + z) - As(z - h)) / (2. * h);
+	}
 
 	// Return ID
 	virtual std::string ID() = 0;

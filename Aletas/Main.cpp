@@ -160,9 +160,9 @@ class GeratrizF : public AletaTaskInput {
 	}
 
 	// Returns dAs(z)/dz
-	virtual double dAsdz(const double& z) {
-		return 2 * M_PI * (2 * a * std::pow(b, 2) * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a * std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + 4 * std::pow(b, 5) * std::pow(z, 6) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 5 * std::pow(b, 3) * std::pow(z, 4) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (3.0 / 2.0) * std::pow(b, 3) * std::pow(z, 4) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 9.0 / 8.0 * b * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 8.0) * b * std::pow(z, 2) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0));
-	}
+	//virtual double dAsdz(const double& z) {
+	//	return 2 * M_PI * (2 * a * std::pow(b, 2) * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a * std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + 4 * std::pow(b, 5) * std::pow(z, 6) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 5 * std::pow(b, 3) * std::pow(z, 4) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (3.0 / 2.0) * std::pow(b, 3) * std::pow(z, 4) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 9.0 / 8.0 * b * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 8.0) * b * std::pow(z, 2) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0));
+	//}
 
 	// Return ID
 	virtual std::string ID() {
@@ -187,9 +187,9 @@ class GeratrizG : public AletaTaskInput {
 	}
 
 	// Returns dAs(z)/dz
-	virtual double dAsdz(const double& z) {
-		return 2 * M_PI * (2 * a * std::pow(b, 2) * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a * std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + 4 * std::pow(b, 5) * std::pow(z, 6) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 5 * std::pow(b, 3) * std::pow(z, 4) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (3.0 / 2.0) * std::pow(b, 3) * std::pow(z, 4) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 9.0 / 8.0 * b * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 8.0) * b * std::pow(z, 2) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0));
-	}
+	//virtual double dAsdz(const double& z) {
+	//	return 2 * M_PI * (2 * a * std::pow(b, 2) * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a * std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + 4 * std::pow(b, 5) * std::pow(z, 6) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 5 * std::pow(b, 3) * std::pow(z, 4) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (3.0 / 2.0) * std::pow(b, 3) * std::pow(z, 4) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 9.0 / 8.0 * b * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 8.0) * b * std::pow(z, 2) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0));
+	//}
 
 	// Return ID
 	virtual std::string ID() {
@@ -214,9 +214,9 @@ class GeratrizH : public AletaTaskInput {
 	}
 
 	// Returns dAs(z)/dz
-	virtual double dAsdz(const double& z) {
-		return 2 * M_PI * (2 * a * std::pow(b, 2) * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a * std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + 4 * std::pow(b, 5) * std::pow(z, 6) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 5 * std::pow(b, 3) * std::pow(z, 4) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (3.0 / 2.0) * std::pow(b, 3) * std::pow(z, 4) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 9.0 / 8.0 * b * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 8.0) * b * std::pow(z, 2) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0));
-	}
+	//virtual double dAsdz(const double& z) {
+	//	return 2 * M_PI * (2 * a * std::pow(b, 2) * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a * std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + 4 * std::pow(b, 5) * std::pow(z, 6) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 5 * std::pow(b, 3) * std::pow(z, 4) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (3.0 / 2.0) * std::pow(b, 3) * std::pow(z, 4) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 9.0 / 8.0 * b * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 8.0) * b * std::pow(z, 2) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0));
+	//}
 
 	// Return ID
 	virtual std::string ID() {
@@ -241,9 +241,9 @@ class GeratrizI : public AletaTaskInput {
 	}
 
 	// Returns dAs(z)/dz
-	virtual double dAsdz(const double& z) {
-		return 2 * M_PI * (2 * a * std::pow(b, 2) * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a * std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + 4 * std::pow(b, 5) * std::pow(z, 6) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 5 * std::pow(b, 3) * std::pow(z, 4) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (3.0 / 2.0) * std::pow(b, 3) * std::pow(z, 4) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 9.0 / 8.0 * b * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 8.0) * b * std::pow(z, 2) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0));
-	}
+	//virtual double dAsdz(const double& z) {
+	//	return 2 * M_PI * (2 * a * std::pow(b, 2) * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a * std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + 4 * std::pow(b, 5) * std::pow(z, 6) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 5 * std::pow(b, 3) * std::pow(z, 4) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (3.0 / 2.0) * std::pow(b, 3) * std::pow(z, 4) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 9.0 / 8.0 * b * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 8.0) * b * std::pow(z, 2) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0));
+	//}
 
 	// Return ID
 	virtual std::string ID() {
@@ -254,8 +254,9 @@ class GeratrizI : public AletaTaskInput {
 // F(z) = a + b*cosh(z)
 class GeratrizJ : public AletaTaskInput {
 	// Parâmetros!! (se houver)
-	double a = (1.0 / 2.0) * ft_D * (std::exp(2 * ft_L) - 4 * std::exp(ft_L) + 1) / (std::exp(2 * ft_L) - 2 * std::exp(ft_L) + 1);
-	double b = (-a + ft_D)/ std::sin(ft_L);
+	//double a = (1.0 / 2.0) * ft_D * (std::exp(2 * ft_L) - 4 * std::exp(ft_L) + 1) / (std::exp(2 * ft_L) - 2 * std::exp(ft_L) + 1);
+	double a = ft_D * (.5 - 1. / std::cosh(ft_L)) / (1. - 1. / std::cosh(ft_L));
+	double b = (-a + ft_D)/ std::cosh(ft_L);
 
 	// Returns F(z)
 	virtual double F(const double& z) {
@@ -268,9 +269,9 @@ class GeratrizJ : public AletaTaskInput {
 	}
 
 	// Returns dAs(z)/dz
-	virtual double dAsdz(const double& z) {
-		return 2 * M_PI * (2 * a * std::pow(b, 2) * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a * std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + 4 * std::pow(b, 5) * std::pow(z, 6) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 5 * std::pow(b, 3) * std::pow(z, 4) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (3.0 / 2.0) * std::pow(b, 3) * std::pow(z, 4) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 9.0 / 8.0 * b * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 8.0) * b * std::pow(z, 2) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0));
-	}
+	//virtual double dAsdz(const double& z) {
+	//	return 2 * M_PI * (2 * a * std::pow(b, 2) * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a * std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + 4 * std::pow(b, 5) * std::pow(z, 6) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 5 * std::pow(b, 3) * std::pow(z, 4) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (3.0 / 2.0) * std::pow(b, 3) * std::pow(z, 4) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 9.0 / 8.0 * b * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 8.0) * b * std::pow(z, 2) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0));
+	//}
 
 	// Return ID
 	virtual std::string ID() {
@@ -281,8 +282,8 @@ class GeratrizJ : public AletaTaskInput {
 // F(z) = a - b*cosh(z)
 class GeratrizK : public AletaTaskInput {
 	// Parâmetros!! (se houver)
-	double a = (1.0 / 2.0) * ft_D * (std::exp(2 * ft_L) - 4 * std::exp(ft_L) + 1) / (std::exp(2 * ft_L) - 2 * std::exp(ft_L) + 1);
-	double b = (a - ft_D) / std::cosh(ft_L);
+	double a = ft_D * .5 / (1. - 1. / std::cosh(ft_L));
+	double b = a / std::cosh(ft_L);
 
 	// Returns F(z)
 	virtual double F(const double& z) {
@@ -295,9 +296,9 @@ class GeratrizK : public AletaTaskInput {
 	}
 
 	// Returns dAs(z)/dz
-	virtual double dAsdz(const double& z) {
-		return 2 * M_PI * (2 * a * std::pow(b, 2) * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a * std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + 4 * std::pow(b, 5) * std::pow(z, 6) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 5 * std::pow(b, 3) * std::pow(z, 4) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (3.0 / 2.0) * std::pow(b, 3) * std::pow(z, 4) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 9.0 / 8.0 * b * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 8.0) * b * std::pow(z, 2) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0));
-	}
+	//virtual double dAsdz(const double& z) {
+	//	return 2 * M_PI * (2 * a * std::pow(b, 2) * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a * std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + 4 * std::pow(b, 5) * std::pow(z, 6) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 5 * std::pow(b, 3) * std::pow(z, 4) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (3.0 / 2.0) * std::pow(b, 3) * std::pow(z, 4) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 9.0 / 8.0 * b * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 8.0) * b * std::pow(z, 2) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0));
+	//}
 
 	// Return ID
 	virtual std::string ID() {
@@ -308,8 +309,8 @@ class GeratrizK : public AletaTaskInput {
 // F(z) = a + b*exp(z)
 class GeratrizL : public AletaTaskInput {
 	// Parâmetros!! (se houver)
-	double a = (1.0 / 2.0) * ft_D * (std::exp(2 * ft_L) - 4 * std::exp(ft_L) + 1) / (std::exp(2 * ft_L) - 2 * std::exp(ft_L) + 1);
-	double b = (a - ft_D) / std::cosh(ft_L);
+	double a = ft_D * (.5 - 1. / std::exp(ft_L)) / (1. - 1. / std::exp(ft_L));
+	double b = (ft_D - a) / std::exp(ft_L);
 
 	// Returns F(z)
 	virtual double F(const double& z) {
@@ -322,9 +323,9 @@ class GeratrizL : public AletaTaskInput {
 	}
 
 	// Returns dAs(z)/dz
-	virtual double dAsdz(const double& z) {
-		return 2 * M_PI * (2 * a * std::pow(b, 2) * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a * std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + 4 * std::pow(b, 5) * std::pow(z, 6) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 5 * std::pow(b, 3) * std::pow(z, 4) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (3.0 / 2.0) * std::pow(b, 3) * std::pow(z, 4) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 9.0 / 8.0 * b * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 8.0) * b * std::pow(z, 2) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0));
-	}
+	//virtual double dAsdz(const double& z) {
+	//	return 2 * M_PI * (2 * a * std::pow(b, 2) * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a * std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + 4 * std::pow(b, 5) * std::pow(z, 6) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 5 * std::pow(b, 3) * std::pow(z, 4) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (3.0 / 2.0) * std::pow(b, 3) * std::pow(z, 4) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 9.0 / 8.0 * b * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 8.0) * b * std::pow(z, 2) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0));
+	//}
 
 	// Return ID
 	virtual std::string ID() {
@@ -332,12 +333,11 @@ class GeratrizL : public AletaTaskInput {
 	}
 };
 
-
 // F(z) = a - b*exp(z)
 class GeratrizM : public AletaTaskInput {
 	// Parâmetros!! (se houver)
-	double a = (1.0 / 2.0) * ft_D * (std::exp(2 * ft_L) - 4 * std::exp(ft_L) + 1) / (std::exp(2 * ft_L) - 2 * std::exp(ft_L) + 1);
-	double b = (a - ft_D) / std::cosh(ft_L);
+	double a = ft_D * .5 / (1. - 1. / std::exp(ft_L));
+	double b = a / std::exp(ft_L);
 
 	// Returns F(z)
 	virtual double F(const double& z) {
@@ -350,9 +350,9 @@ class GeratrizM : public AletaTaskInput {
 	}
 
 	// Returns dAs(z)/dz
-	virtual double dAsdz(const double& z) {
-		return 2 * M_PI * (2 * a * std::pow(b, 2) * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a * std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + 4 * std::pow(b, 5) * std::pow(z, 6) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 5 * std::pow(b, 3) * std::pow(z, 4) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (3.0 / 2.0) * std::pow(b, 3) * std::pow(z, 4) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 9.0 / 8.0 * b * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 8.0) * b * std::pow(z, 2) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0));
-	}
+	//virtual double dAsdz(const double& z) {
+	//	return 2 * M_PI * (2 * a * std::pow(b, 2) * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a * std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 2.0) * a / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + 4 * std::pow(b, 5) * std::pow(z, 6) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 5 * std::pow(b, 3) * std::pow(z, 4) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (3.0 / 2.0) * std::pow(b, 3) * std::pow(z, 4) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0) - 9.0 / 8.0 * b * std::pow(z, 2) / std::sqrt(4 * std::pow(b, 2) * std::pow(z, 2) + 1) + (1.0 / 8.0) * b * std::pow(z, 2) / std::pow(4 * std::pow(b, 2) * std::pow(z, 2) + 1, 3.0 / 2.0));
+	//}
 
 	// Return ID
 	virtual std::string ID() {
@@ -375,6 +375,9 @@ void test_AletaTask()
 	std::unique_ptr<AletaTask> aleta;
 	std::vector<std::shared_ptr<AletaTaskInput>> geratrizes;
 	std::string filename;
+
+
+	geratrizes.clear();
 
 	// ========== Altere aqui! ==========
 #pragma region  Geratrizes

@@ -1,0 +1,14 @@
+#ifndef QUAD_HPP
+#define QUAD_HPP
+
+#define c_p1 0.949107912342759
+#define c_p2 0.741531185599394
+#define c_p3 0.405845151377397
+#define c_p0 0.000000000000000
+
+#define c_w1 0.129484966168870
+#define c_w2 0.279705391489277
+#define c_w3 0.381830050505119
+#define c_w0 0.417959183673469
+
+#endif // QUAD_HPP
