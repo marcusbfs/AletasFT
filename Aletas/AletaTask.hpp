@@ -38,21 +38,14 @@ public:
 
 	// Returns As(z)
 	virtual double As(const double& z) {
-		double s =
-			c_w1 * (
-				m_int(z * .5 * (c_p1 + 1.0)) +
-				m_int(z * .5 * (-c_p1 + 1.0))
-				) +
-			c_w2 * (
-				m_int(z * .5 * (c_p2 + 1.0)) +
-				m_int(z * .5 * (-c_p2 + 1.0))
-				) +
-			c_w3 * (
-				m_int(z * .5 * (c_p3 + 1.0)) +
-				m_int(z * .5 * (-c_p3 + 1.0))
-				) +
-			c_w0 * m_int(z * .5 * (c_p0 + 1));
-		return s * M_PI * z;
+		double sum = 0;
+		//for (int i = 0; i < 7; i++) {
+		//	sum += GAUSS_WEIGHTS[i] * m_int(z * .5 * (1. + GAUSS_NODES[i]));
+		//}
+		for (int i = 0; i < 15; i++) {
+			sum += KRONROD_WEIGHTS[i] * m_int(z * .5 * (1. + KRONROD_NODES[i]));
+		}
+		return sum * M_PI * z;
 	}
 
 	// Returns dAs(z)/dz
@@ -157,7 +150,7 @@ public:
 
 		file.open(filename);
 
-		for (uint i = 0; i < T.size(); i++) {
+		for (size_t i = 0; i < T.size(); i++) {
 			file << std::fixed <<
 				std::setprecision(10) << 
 				std::setw(20) << m_aleta.get_z(i) << 

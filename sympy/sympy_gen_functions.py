@@ -1,4 +1,4 @@
-from sympy import *
+﻿from sympy import *
 from sympy.printing.cxxcode import cxxcode
 
 # definições
@@ -7,9 +7,9 @@ z = symbols('z', Real=True)
 
 # coloque F(z) aqui
 # fz = a + b * z
-fz = a -  b*cosh(z)
+fz = a +  b*z*z*z
 crescente = True
-crescente = False
+#crescente = False
 
 
 if (crescente):
@@ -42,16 +42,16 @@ print(cxxcode(dFdz))
 print("")
 
 # As
-# As = 2*pi*integrate(fz*sqrt(1+dFdz**2), (z, 0, z))
+As = 2*pi*integrate(fz*sqrt(1+dFdz**2), (z, 0, z))
 # print("As(z)")
 # print(As)
 # print("")
 
 
 # dAsDz
-# dAsdz = diff(As,z)
+dAsdz = diff(As,z)
 # print("dAs(z)/dz")
 # # print(dAsdz)
-# print(cxxcode(dAsdz))
+print(cxxcode(dAsdz))
 # print("")
 
