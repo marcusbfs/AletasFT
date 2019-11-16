@@ -2,23 +2,34 @@
 #include <cmath>
 #include <memory>
 #include <vector>
+#include <sstream>
 #include "Eigen/Dense"
 #include "Aletas.hpp"
 #include "AletaTask.hpp"
 #include "FunDer.hpp"
 #include "GeratrizesTask.hpp"
 
-void test_AletaTask();
+void test_AletaTask(const int& nop);
 
-int main()
+int main(int argc, char** argv)
 {
-	test_AletaTask();
-	std::getchar();
+	int n;
+	if (argc > 1) {
+		std::stringstream strm;
+		strm << argv[1];
+		strm >> n;
+		test_AletaTask(n);
+	}
+	else
+		n = 9;
+
+	test_AletaTask(n);
+	//std::getchar();
 }
 
-void test_AletaTask()
+void test_AletaTask(const int& nop )
 {
-	const int numberOfPoints = 9;
+	const int numberOfPoints = nop;
 	std::unique_ptr<AletaTask> aleta;
 	std::vector<std::shared_ptr<AletaTaskInput>> geratrizes;
 	std::string filename;
@@ -46,12 +57,12 @@ void test_AletaTask()
 	for (int i = 0; i < geratrizes.size(); i++) {
 		aleta = std::make_unique<AletaTask>(numberOfPoints, geratrizes[i]);
 
-		std::cout << "Geratriz " << aleta->ID() << std::endl;
 		Eigen::VectorXd T = aleta->getT();
 
-		std::cout << T << std::endl;
-		//std::cout << aleta.getA() << std::endl;
-		std::cout << "\n " <<   std::endl;
+		//std::cout << "Geratriz " << aleta->ID() << std::endl;
+		//std::cout << T << std::endl;
+		//std::cout << aleta->getA() << std::endl;
+		//std::cout << "\n " <<   std::endl;
 
 		filename = "geratriz_" + aleta->ID() + ".txt";
 		aleta->writeTtoFile(filename);

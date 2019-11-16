@@ -3,6 +3,7 @@
 
 #include <memory>
 #include "Eigen/Dense"
+#include "Eigen/Sparse"
 #include "FunDer.hpp"
 
 typedef unsigned int uint;
@@ -71,12 +72,34 @@ public:
 	// Define delta
 	m_delta = m_L / (m_numberOfpoints - 1.0);
 
-	// Initialize b vector
+	// Boundary conditions
+	// theta(0) = theta_a
 	m_b(0) = m_theta_a;
-	m_b(m_numberOfpoints - 1) = m_theta_b;
+	m_A(0, 0) = 1.0;
 
-	// Initialize A matrix
-	m_A(0, 0) = m_A(m_numberOfpoints - 1, m_numberOfpoints - 1) = 1.0;
+	bool known_theta_b = false;
+
+	if (known_theta_b) {
+		// theta(L) = theta_b
+		m_b(m_numberOfpoints - 1) = m_theta_b;
+		m_A(m_numberOfpoints - 1, m_numberOfpoints - 1) = 1.0; // theta(L) = theta_b
+	}
+	else {
+		// h*theta(L) = - k * dtheta(L)/dz
+		m_b(m_numberOfpoints - 1) = 0.0;
+		m_A(m_numberOfpoints - 1, m_numberOfpoints - 1) = m_h + m_k/m_delta;
+		m_A(m_numberOfpoints - 1, m_numberOfpoints - 2) = -m_k/m_delta;
+	}
+
+	// Fill sparse matrix
+	//Eigen::SparseMatrix<double> mat(m_numberOfpoints, m_numberOfpoints);
+	//for (uint i = 1; i < m_numberOfpoints - 1; i++) {
+	//	mat.insert(i, i - 1) = this->coeff_i_minus_1(i);
+	//	mat.insert(i, i) = this->coeff_i(i);
+	//	mat.insert(i, i + 1) = this->coeff_i_plus_1(i);
+	//}
+
+	// Fill dense matrix
 	for (uint i = 1; i < m_numberOfpoints - 1; i++) {
 		m_A(i, i - 1) = this->coeff_i_minus_1(i);
 		m_A(i, i) = this->coeff_i(i);
@@ -86,7 +109,8 @@ public:
 
  void Aleta::solve() {
 	 // Solves system of algebraic equations
-	 m_x = m_A.colPivHouseholderQr().solve(m_b);
+	 //m_x = m_A.fullPivHouseholderQr().solve(m_b);
+	 m_x = m_A.fullPivHouseholderQr().solve(m_b);
  }
 
  inline double Aleta::get_z(const uint& i) const
@@ -97,27 +121,18 @@ public:
 
  inline double Aleta::coeff_i_minus_1(const uint& i) const
  {
-	 //double C1 = m_Ac->der(this->get_z(i)) / m_Ac->fun(this->get_z(i));
-	 //return 1.0 / (m_delta * m_delta) - C1 * .5 / m_delta;
-
-	 double C1 = m_Ac->der(this->get_z(i)) / m_Ac->fun(this->get_z(i));
-	 return 1.0 - m_delta * .5 * C1;
+	 double C1 = m_Ac->der(this->get_z(i));
+	 return 1.0*m_Ac->fun(this->get_z(i)) - m_delta * .5 * C1;
  }
  inline double Aleta::coeff_i(const uint& i) const
  {
-	 //double C2 = (m_h/m_k)* m_As->der(this->get_z(i)) / m_Ac->fun(this->get_z(i));
-	 //return -2.0 / (m_delta * m_delta) - C2;
-
-	 double C2 = m_h* m_As->der(this->get_z(i))/( m_Ac->fun(this->get_z(i)) * m_k);
-	 return -2.0 - m_delta * m_delta * C2;
+	 double C2 = m_h* m_As->der(this->get_z(i))/(  m_k);
+	 return -2.0 * m_Ac->fun(this->get_z(i)) - m_delta * m_delta * C2;
  }
  inline double Aleta::coeff_i_plus_1(const uint& i) const
  {
-	 //double C1 = m_Ac->der(this->get_z(i)) / m_Ac->fun(this->get_z(i));
-	 //return 1.0 / (m_delta * m_delta) + C1 * .5 / m_delta;
-
-	 double C1 = m_Ac->der(this->get_z(i)) / m_Ac->fun(this->get_z(i));
-	 return 1.0 + m_delta * .5 * C1;
+	 double C1 = m_Ac->der(this->get_z(i));
+	 return 1.0* m_Ac->fun(this->get_z(i)) + m_delta * .5 * C1;
  }
 
  Eigen::MatrixXd Aleta::getA() const

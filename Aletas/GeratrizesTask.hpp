@@ -62,8 +62,9 @@ class GeratrizB : public AletaTaskInput {
 // F(z) = a - b*z
 class GeratrizC : public AletaTaskInput {
 	// Parâmetros!! (se houver)
+	double delta = 0;
 	double a = ft_D / 2.0;
-	double b = a / ft_L;
+	double b = (a - delta) / ft_L;
 
 	// Returns F(z)
 	virtual double F(const double& z) {
