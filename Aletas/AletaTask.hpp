@@ -53,6 +53,17 @@ public:
 		return (As(h + z) - As(z - h)) / (2. * h);
 	}
 
+	// Returns PI* integral(ll, hl, F(z)^2)
+	virtual double Volume(const double& ll, const double& hl) {
+		double integral = 0.0;
+		const double c1 = .5 * (hl - ll);
+		const double c2 = .5 * (hl + ll);
+		for (int i = 0; i < 15; i++) {
+			integral += KRONROD_WEIGHTS[i] * std::pow(this->F(c1*KRONROD_NODES[i] + c2),2);
+		}
+		return integral * EIGEN_PI * c1;
+	}
+
 	// Return ID
 	virtual std::string ID() = 0;
 };
@@ -94,6 +105,25 @@ public:
 	}
 };
 
+class VolumeWrapper : public FunDer {
+private:
+	std::shared_ptr<AletaTaskInput> m_Fz;
+public:
+	VolumeWrapper(const std::shared_ptr<AletaTaskInput>& f)
+		: m_Fz(f) {}
+
+	// Returns the function value
+	double fun(const double& z) const {
+		// It's not needed
+		return m_Fz->Volume(0.0, z);
+	}
+
+	// Returns the derivative of function w.r.t. z value
+	double der(const double& z) const {
+		return 0.0;
+	}
+};
+
 class AletaTask  {
 public:
 	Aleta m_aleta; 
@@ -112,6 +142,7 @@ public:
 		// Initialize functions
 		m_aleta.setAc(std::make_shared<AcWrapper>(m_geratriz));
 		m_aleta.setAs(std::make_shared<AsWrapper>(m_geratriz));
+		m_aleta.setVol(std::make_shared<VolumeWrapper>(m_geratriz));
 
 		// Parameters
 		m_aleta.setD(ft_D);
@@ -163,6 +194,7 @@ public:
 		Eigen::VectorXd T = this->getT();
 		Eigen::VectorXd q = this->getFlux();
 		Eigen::VectorXd qd = this->getRate();
+		const double volume = this->m_aleta.getVolume();
 
 		file.open(filename);
 
@@ -173,6 +205,7 @@ public:
 				std::setw(20) << T(i) <<
 				std::setw(20) << q(i) <<
 				std::setw(20) << qd(i) <<
+				std::setw(20) << volume <<
 				std::endl;
 		}
 		file.close();

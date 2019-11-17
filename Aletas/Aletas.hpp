@@ -16,7 +16,7 @@ protected:
 	//Eigen::MatrixXd m_A;
 	Eigen::SparseMatrix<double> m_A;
 	Eigen::VectorXd m_b, m_x;
-	std::shared_ptr<FunDer> m_Ac, m_As;
+	std::shared_ptr<FunDer> m_Ac, m_As, m_vol;
 
 	// Private functions
 	inline double coeff_i_minus_1(const uint& i) const;
@@ -34,6 +34,8 @@ public:
 	Eigen::VectorXd getFlux() const;
 	// Return reate q_dot = -k Ac dT/dz
 	Eigen::VectorXd getRate() const;
+	// Return the volume of aleta ayy
+	double getVolume() const;
 
 	// Get z position
 	inline double get_z(const uint& i) const;
@@ -48,6 +50,8 @@ public:
 	void setAc(const std::shared_ptr<FunDer>& Ac);
 	// Set As
 	void setAs(const std::shared_ptr<FunDer>& As);
+	// Set Volume
+	void setVol(const std::shared_ptr<FunDer>& vol);
 	// Set k
 	void setk(const double& k);
 	// Set h
@@ -199,6 +203,11 @@ inline Eigen::VectorXd Aleta::getRate() const
 	return qd;
 }
 
+inline double Aleta::getVolume() const
+{
+	return m_vol->fun(m_L);
+}
+
 
 inline void Aleta::setNumberOfPoints(const uint& n)
 {
@@ -219,6 +228,11 @@ inline void Aleta::setAc(const std::shared_ptr<FunDer>& Ac)
 inline void Aleta::setAs(const std::shared_ptr<FunDer>& As)
 {
 	m_As = As;
+}
+
+inline void Aleta::setVol(const std::shared_ptr<FunDer>& vol)
+{
+	m_vol = vol;
 }
 
 inline void Aleta::seth(const double& h)
