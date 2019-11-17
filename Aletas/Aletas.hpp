@@ -92,8 +92,27 @@ public:
 	else {
 		// h*theta(L) = - k * dtheta(L)/dz
 		m_b(m_numberOfpoints - 1) = 0.0;
-		m_A.insert(m_numberOfpoints - 1, m_numberOfpoints - 1) = m_h + m_k/m_delta;
-		m_A.insert(m_numberOfpoints - 1, m_numberOfpoints - 2) = -m_k/m_delta;
+
+		bool version_1 = false;
+		if (version_1) {
+			// Version 1
+			m_A.insert(m_numberOfpoints - 1, m_numberOfpoints - 2) = -m_k/m_delta;
+			m_A.insert(m_numberOfpoints - 1, m_numberOfpoints - 1) = m_h + m_k/m_delta;
+		}
+		else {
+			// Version 2
+			//double Ac = m_Ac->fun(get_z(m_numberOfpoints - 1));
+			//double derAc = m_Ac->der(get_z(m_numberOfpoints - 1));
+			//double derAs = m_As->der(get_z(m_numberOfpoints - 1));
+			//double Ac = m_Ac->fun(m_L);
+			//double derAc = m_Ac->der(m_L);
+			//double derAs = m_As->der(m_L);
+			//double coef_im1 = 2.*Ac/(m_delta*m_delta);
+			//double coef_i = 2. * Ac / (m_delta * m_delta) * (-1. - m_delta * m_h / m_k) + (m_h / m_k) * (-derAc - derAs);
+			m_A.insert(m_numberOfpoints - 1, m_numberOfpoints - 3) = m_k * .5 / m_delta;
+			m_A.insert(m_numberOfpoints - 1, m_numberOfpoints - 2) = -2.0 * m_k / m_delta;
+			m_A.insert(m_numberOfpoints - 1, m_numberOfpoints - 1) = -m_h + 3.*m_k*.5/m_delta;
+		}
 	}
 
 	// Fill sparse matrix
