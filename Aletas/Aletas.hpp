@@ -13,7 +13,8 @@ protected:
 	// Parameters
 	uint m_numberOfpoints;
 	double m_theta_a, m_theta_b, m_k, m_h, m_D, m_L, m_delta;
-	Eigen::MatrixXd m_A;
+	//Eigen::MatrixXd m_A;
+	Eigen::SparseMatrix<double> m_A;
 	Eigen::VectorXd m_b, m_x;
 	std::shared_ptr<FunDer> m_Ac, m_As;
 
@@ -66,51 +67,58 @@ public:
 	m_A.resize(m_numberOfpoints, m_numberOfpoints);
 	m_b.resize(m_numberOfpoints);
 	m_x.resize(m_numberOfpoints);
+
 	m_b.setZero();
+
 	m_A.setZero();
+	m_A.reserve(2 + 3 * (m_numberOfpoints - 2));
 
 	// Define delta
 	m_delta = m_L / (m_numberOfpoints - 1.0);
 
 	// Boundary conditions
+
 	// theta(0) = theta_a
 	m_b(0) = m_theta_a;
-	m_A(0, 0) = 1.0;
+	m_A.insert(0, 0) = 1.0;
 
 	bool known_theta_b = false;
 
 	if (known_theta_b) {
 		// theta(L) = theta_b
 		m_b(m_numberOfpoints - 1) = m_theta_b;
-		m_A(m_numberOfpoints - 1, m_numberOfpoints - 1) = 1.0; // theta(L) = theta_b
+		m_A.insert(m_numberOfpoints - 1, m_numberOfpoints - 1) = 1.0; // theta(L) = theta_b
 	}
 	else {
 		// h*theta(L) = - k * dtheta(L)/dz
 		m_b(m_numberOfpoints - 1) = 0.0;
-		m_A(m_numberOfpoints - 1, m_numberOfpoints - 1) = m_h + m_k/m_delta;
-		m_A(m_numberOfpoints - 1, m_numberOfpoints - 2) = -m_k/m_delta;
+		m_A.insert(m_numberOfpoints - 1, m_numberOfpoints - 1) = m_h + m_k/m_delta;
+		m_A.insert(m_numberOfpoints - 1, m_numberOfpoints - 2) = -m_k/m_delta;
 	}
 
 	// Fill sparse matrix
-	//Eigen::SparseMatrix<double> mat(m_numberOfpoints, m_numberOfpoints);
-	//for (uint i = 1; i < m_numberOfpoints - 1; i++) {
-	//	mat.insert(i, i - 1) = this->coeff_i_minus_1(i);
-	//	mat.insert(i, i) = this->coeff_i(i);
-	//	mat.insert(i, i + 1) = this->coeff_i_plus_1(i);
-	//}
+	for (uint i = 1; i < m_numberOfpoints - 1; i++) {
+		m_A.insert(i, i - 1) = this->coeff_i_minus_1(i);
+		m_A.insert(i, i) = this->coeff_i(i);
+		m_A.insert(i, i + 1) = this->coeff_i_plus_1(i);
+	}
+	//m_A.makeCompressed();
 
 	// Fill dense matrix
-	for (uint i = 1; i < m_numberOfpoints - 1; i++) {
-		m_A(i, i - 1) = this->coeff_i_minus_1(i);
-		m_A(i, i) = this->coeff_i(i);
-		m_A(i, i + 1) = this->coeff_i_plus_1(i);
-	}
+	//for (uint i = 1; i < m_numberOfpoints - 1; i++) {
+	//	m_A(i, i - 1) = this->coeff_i_minus_1(i);
+	//	m_A(i, i) = this->coeff_i(i);
+	//	m_A(i, i + 1) = this->coeff_i_plus_1(i);
+	//}
 }
 
  void Aleta::solve() {
 	 // Solves system of algebraic equations
 	 //m_x = m_A.fullPivHouseholderQr().solve(m_b);
-	 m_x = m_A.fullPivHouseholderQr().solve(m_b);
+	 //Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
+	 Eigen::BiCGSTAB<Eigen::SparseMatrix<double>, Eigen::IncompleteLUT<double>> solver;
+	 solver.compute(m_A);
+	 m_x = solver.solve(m_b);
  }
 
  inline double Aleta::get_z(const uint& i) const
@@ -137,7 +145,8 @@ public:
 
  Eigen::MatrixXd Aleta::getA() const
 {
-	return m_A;
+	//return m_A;
+	return Eigen::MatrixXd(m_A);
 }
 
 inline Eigen::VectorXd Aleta::getb() const

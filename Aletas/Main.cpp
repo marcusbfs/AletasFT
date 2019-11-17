@@ -18,7 +18,6 @@ int main(int argc, char** argv)
 		std::stringstream strm;
 		strm << argv[1];
 		strm >> n;
-		test_AletaTask(n);
 	}
 	else
 		n = 9;
@@ -33,6 +32,7 @@ void test_AletaTask(const int& nop )
 	std::unique_ptr<AletaTask> aleta;
 	std::vector<std::shared_ptr<AletaTaskInput>> geratrizes;
 	std::string filename;
+	Eigen::VectorXd T;
 
 	// ========== Altere aqui! ==========
 #pragma region  Geratrizes
@@ -57,7 +57,7 @@ void test_AletaTask(const int& nop )
 	for (int i = 0; i < geratrizes.size(); i++) {
 		aleta = std::make_unique<AletaTask>(numberOfPoints, geratrizes[i]);
 
-		Eigen::VectorXd T = aleta->getT();
+		 T = aleta->getT();
 
 		//std::cout << "Geratriz " << aleta->ID() << std::endl;
 		//std::cout << T << std::endl;
