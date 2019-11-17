@@ -100,6 +100,8 @@ public:
 	double Tinf = ft_Tinf;
 	double T0 = ft_T0;
 	std::shared_ptr<AletaTaskInput> m_geratriz;
+	Eigen::VectorXd m_Theta;
+	Eigen::VectorXd m_T;
 
 public:
 	//AletaTask(const std::shared_ptr<FunDer>& Fz, const std::shared_ptr<FunDer>& As) {
@@ -120,33 +122,47 @@ public:
 		m_aleta.setBoundaryConditions(T0-Tinf, 0.0);
 	}
 
+	void build() {
+		m_aleta.build();
+	}
+
+	void solve() {
+		m_aleta.solve();
+		m_T = getTheta();
+		for (int i = 0; i < m_T.size(); i++)
+			m_T(i) += Tinf;
+	}
+
 	std::string ID() const {
 		return m_geratriz->ID();
 	}
 
-	Eigen::VectorXd getTheta() {
-		m_aleta.build();
-		m_aleta.solve();
+	Eigen::VectorXd getTheta() const {
 		return m_aleta.getx();
 	}
 
-	Eigen::MatrixXd getA() {
-		m_aleta.build();
+	Eigen::MatrixXd getA() const {
 		return m_aleta.getA();
 	}
 
-	Eigen::VectorXd getT() {
-		Eigen::VectorXd T = this->getTheta();
-		// Theta = T - Tinf
-		for (int i = 0; i < T.size(); i++)
-			T(i) += Tinf;
-		return T;
+	Eigen::VectorXd getT() const {
+		return m_T;
 	}
 
-	void writeTtoFile(const std::string& filename) {
+	Eigen::VectorXd getFlux() const {
+		return this->m_aleta.getFlux();
+	}
+
+	Eigen::VectorXd getRate() const {
+		return this->m_aleta.getRate();
+	}
+
+	void writeDataToFile(const std::string& filename) const {
 
 		std::ofstream file;
 		Eigen::VectorXd T = this->getT();
+		Eigen::VectorXd q = this->getFlux();
+		Eigen::VectorXd qd = this->getRate();
 
 		file.open(filename);
 
@@ -154,9 +170,11 @@ public:
 			file << std::fixed <<
 				std::setprecision(10) << 
 				std::setw(20) << m_aleta.get_z(i) << 
-				std::setw(20) << T(i) << std::endl;
+				std::setw(20) << T(i) <<
+				std::setw(20) << q(i) <<
+				std::setw(20) << qd(i) <<
+				std::endl;
 		}
-
 		file.close();
 	}
 };

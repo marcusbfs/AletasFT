@@ -30,6 +30,10 @@ public:
 	Eigen::VectorXd getb() const;
 	// Return x vector (Ax = b)
 	Eigen::VectorXd getx() const;
+	// Return flux q = -kdT/dz
+	Eigen::VectorXd getFlux() const;
+	// Return reate q_dot = -k Ac dT/dz
+	Eigen::VectorXd getRate() const;
 
 	// Get z position
 	inline double get_z(const uint& i) const;
@@ -101,17 +105,9 @@ public:
 		}
 		else {
 			// Version 2
-			//double Ac = m_Ac->fun(get_z(m_numberOfpoints - 1));
-			//double derAc = m_Ac->der(get_z(m_numberOfpoints - 1));
-			//double derAs = m_As->der(get_z(m_numberOfpoints - 1));
-			//double Ac = m_Ac->fun(m_L);
-			//double derAc = m_Ac->der(m_L);
-			//double derAs = m_As->der(m_L);
-			//double coef_im1 = 2.*Ac/(m_delta*m_delta);
-			//double coef_i = 2. * Ac / (m_delta * m_delta) * (-1. - m_delta * m_h / m_k) + (m_h / m_k) * (-derAc - derAs);
-			m_A.insert(m_numberOfpoints - 1, m_numberOfpoints - 3) = m_k * .5 / m_delta;
-			m_A.insert(m_numberOfpoints - 1, m_numberOfpoints - 2) = -2.0 * m_k / m_delta;
-			m_A.insert(m_numberOfpoints - 1, m_numberOfpoints - 1) = -m_h + 3.*m_k*.5/m_delta;
+			m_A.insert(m_numberOfpoints - 1, m_numberOfpoints - 3) = m_k * .5;
+			m_A.insert(m_numberOfpoints - 1, m_numberOfpoints - 2) = -2.0 * m_k;
+			m_A.insert(m_numberOfpoints - 1, m_numberOfpoints - 1) = -m_h*m_delta + 3. * m_k * .5;
 		}
 	}
 
@@ -177,6 +173,32 @@ inline Eigen::VectorXd Aleta::getx() const
 {
 	return m_x;
 }
+
+inline Eigen::VectorXd Aleta::getFlux() const
+{
+	Eigen::VectorXd q(m_numberOfpoints);
+
+	q(0) = -m_k*(m_x(1) - m_x(0))/ m_delta;
+	q(m_numberOfpoints-1) = -m_k*(m_x(m_numberOfpoints-1) - m_x(m_numberOfpoints-2))/ m_delta;
+
+	for (uint i = 1; i < m_numberOfpoints - 1; i++) {
+		q(i) = - m_k* (m_x(i + 1) - m_x(i - 1)) * .5 / m_delta;
+	}
+
+	return q;
+}
+
+inline Eigen::VectorXd Aleta::getRate() const
+{
+	Eigen::VectorXd qd = this->getFlux();
+
+	for (uint i = 0; i < m_numberOfpoints; i++) {
+		qd(i) *= this->m_Ac->fun(this->get_z(i));
+	}
+
+	return qd;
+}
+
 
 inline void Aleta::setNumberOfPoints(const uint& n)
 {

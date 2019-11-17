@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cmath>
 #include <memory>
 #include <vector>
 #include <sstream>
@@ -15,18 +14,16 @@ int main(int argc, char** argv)
 {
 	int n;
 	if (argc > 1) {
-		std::stringstream strm;
-		strm << argv[1];
+		std::stringstream strm(argv[1]);
 		strm >> n;
 	}
 	else
 		n = 9;
 
 	test_AletaTask(n);
-	//std::getchar();
 }
 
-void test_AletaTask(const int& nop )
+static void test_AletaTask(const int& nop )
 {
 	const int numberOfPoints = nop;
 	std::unique_ptr<AletaTask> aleta;
@@ -57,7 +54,9 @@ void test_AletaTask(const int& nop )
 	for (int i = 0; i < geratrizes.size(); i++) {
 		aleta = std::make_unique<AletaTask>(numberOfPoints, geratrizes[i]);
 
-		 T = aleta->getT();
+		aleta->build();
+		aleta->solve();
+		T = aleta->getT();
 
 		//std::cout << "Geratriz " << aleta->ID() << std::endl;
 		//std::cout << T << std::endl;
@@ -65,7 +64,7 @@ void test_AletaTask(const int& nop )
 		//std::cout << "\n " <<   std::endl;
 
 		filename = "geratriz_" + aleta->ID() + ".txt";
-		aleta->writeTtoFile(filename);
+		aleta->writeDataToFile(filename);
 		aleta.release();
 	}
 }
