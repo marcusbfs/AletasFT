@@ -1,6 +1,10 @@
 #ifndef QUAD_HPP
 #define QUAD_HPP
 
+#include <functional>
+
+#pragma region DATA
+
 // Gauss
 #define c_p0 0.000000000000000
 #define c_w0 0.417959183673469
@@ -55,5 +59,28 @@ double KRONROD_WEIGHTS[15] = { kc_w0,
 						kc_w5, kc_w5,
 						kc_w6, kc_w6,
 						kc_w7, kc_w7 };
+
+#pragma endregion
+
+double quad15points(double (*fun)(const double&), const double& ll, const double& hl) {
+	double integral = 0.0;
+	const double c1 = .5 * (hl - ll);
+	const double c2 = .5 * (hl + ll);
+	for (int i = 0; i < 15; i++) {
+		integral += KRONROD_WEIGHTS[i] * fun(c1 * KRONROD_NODES[i] + c2);
+	}
+	return integral * c1;
+}
+
+double quad15points(std::function<double(const double&)>& fun, const double& ll, const double& hl) {
+	double integral = 0.0;
+	const double c1 = .5 * (hl - ll);
+	const double c2 = .5 * (hl + ll);
+	for (int i = 0; i < 15; i++) {
+		integral += KRONROD_WEIGHTS[i] * fun(c1 * KRONROD_NODES[i] + c2);
+	}
+	return integral * c1;
+}
+
 
 #endif // QUAD_HPP

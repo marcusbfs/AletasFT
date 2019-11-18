@@ -32,20 +32,16 @@ public:
 	virtual double dFdz(const double& z) = 0;
 
 	// Returns integrand
-	double m_int(const double& z) {
+	double m_int(const double z) {
 		return F(z) * std::sqrt(1.0 + std::pow(dFdz(z), 2));
 	}
 
 	// Returns As(z)
 	virtual double As(const double& z) {
-		double sum = 0;
-		//for (int i = 0; i < 7; i++) {
-		//	sum += GAUSS_WEIGHTS[i] * m_int(z * .5 * (1. + GAUSS_NODES[i]));
-		//}
-		for (int i = 0; i < 15; i++) {
-			sum += KRONROD_WEIGHTS[i] * m_int(z * .5 * (1. + KRONROD_NODES[i]));
-		}
-		return sum * M_PI * z;
+		// Integrand
+		std::function<double(const double&)> mf =
+			[&](const double& _z) {return this->m_int(_z); };
+		return quad15points(mf, 0, z) * 2.0 * M_PI * z;
 	}
 
 	// Returns dAs(z)/dz
@@ -55,13 +51,10 @@ public:
 
 	// Returns PI* integral(ll, hl, F(z)^2)
 	virtual double Volume(const double& ll, const double& hl) {
-		double integral = 0.0;
-		const double c1 = .5 * (hl - ll);
-		const double c2 = .5 * (hl + ll);
-		for (int i = 0; i < 15; i++) {
-			integral += KRONROD_WEIGHTS[i] * std::pow(this->F(c1*KRONROD_NODES[i] + c2),2);
-		}
-		return integral * EIGEN_PI * c1;
+		// Integrand
+		std::function<double(const double&)> mf =
+			[&](const double& _z) {return std::pow(this->F(_z), 2);};
+		return quad15points(mf, ll, hl) * EIGEN_PI;
 	}
 
 	// Return ID
