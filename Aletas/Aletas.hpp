@@ -90,7 +90,7 @@ public:
 	m_b(0) = m_theta_a;
 	m_A.insert(0, 0) = 1.0;
 
-	bool known_theta_b = false;
+	constexpr bool known_theta_b = false;
 
 	if (known_theta_b) {
 		// theta(L) = theta_b
@@ -101,11 +101,11 @@ public:
 		// h*theta(L) = - k * dtheta(L)/dz
 		m_b(m_numberOfpoints - 1) = 0.0;
 
-		bool version_1 = false;
+		constexpr bool version_1 = true;
 		if (version_1) {
 			// Version 1
-			m_A.insert(m_numberOfpoints - 1, m_numberOfpoints - 2) = -m_k/m_delta;
-			m_A.insert(m_numberOfpoints - 1, m_numberOfpoints - 1) = m_h + m_k/m_delta;
+			m_A.insert(m_numberOfpoints - 1, m_numberOfpoints - 2) = -m_k;
+			m_A.insert(m_numberOfpoints - 1, m_numberOfpoints - 1) = m_k + m_delta * m_h;
 		}
 		else {
 			// Version 2

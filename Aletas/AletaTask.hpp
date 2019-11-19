@@ -23,7 +23,15 @@
 // Class for calcultation of Ac and dAc/dz based on F(z)
 class AletaTaskInput {
 private:
-	const double h = 1e-8;
+	const double m_h = 1e-8;
+	std::function<double(const double&)> m_AsIntegrand =
+		[this](const double& _z) {
+		return this->F(_z) * std::sqrt(1.0 + std::pow(this->dFdz(_z), 2));
+	};
+	std::function<double(const double&)> m_VolumeIntegrand =
+		[this](const double& _z) {
+		return std::pow(this->F(_z), 2);
+	};
 public:
 	// Returns F(z)
 	virtual double F(const double& z) = 0;
@@ -31,30 +39,19 @@ public:
 	// Returns dF(z)/dz
 	virtual double dFdz(const double& z) = 0;
 
-	// Returns integrand
-	double m_int(const double z) {
-		return F(z) * std::sqrt(1.0 + std::pow(dFdz(z), 2));
-	}
-
 	// Returns As(z)
 	virtual double As(const double& z) {
-		// Integrand
-		std::function<double(const double&)> mf =
-			[&](const double& _z) {return this->m_int(_z); };
-		return quad15points(mf, 0, z) * 2.0 * M_PI * z;
+		return quad15points(this->m_AsIntegrand, 0, z) * 2.0 * M_PI * z;
 	}
 
 	// Returns dAs(z)/dz
 	virtual double dAsdz(const double& z) {
-		return (As(h + z) - As(z - h)) / (2. * h);
+		return (As(m_h + z) - As(z - m_h)) / (2. * m_h);
 	}
 
 	// Returns PI* integral(ll, hl, F(z)^2)
 	virtual double Volume(const double& ll, const double& hl) {
-		// Integrand
-		std::function<double(const double&)> mf =
-			[&](const double& _z) {return std::pow(this->F(_z), 2);};
-		return quad15points(mf, ll, hl) * EIGEN_PI;
+		return quad15points(this->m_VolumeIntegrand, ll, hl) * EIGEN_PI;
 	}
 
 	// Return ID

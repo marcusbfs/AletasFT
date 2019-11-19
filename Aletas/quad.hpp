@@ -62,25 +62,26 @@ double KRONROD_WEIGHTS[15] = { kc_w0,
 
 #pragma endregion
 
-double quad15points(double (*fun)(const double&), const double& ll, const double& hl) {
+// Returns the integral of fun(x) from "ll" to "hl"
+// using a 15 points Gaussian Quadrature
+double quad15points(const std::function<double(const double&)>& fun, const double& ll, const double& hl) {
 	double integral = 0.0;
 	const double c1 = .5 * (hl - ll);
-	const double c2 = .5 * (hl + ll);
 	for (int i = 0; i < 15; i++) {
-		integral += KRONROD_WEIGHTS[i] * fun(c1 * KRONROD_NODES[i] + c2);
+		integral += KRONROD_WEIGHTS[i] * fun(c1 * KRONROD_NODES[i] + .5*(hl+ll));
 	}
 	return integral * c1;
 }
 
-double quad15points(std::function<double(const double&)>& fun, const double& ll, const double& hl) {
+// Returns the integral of fun(x) from "ll" to "hl"
+// using a 7 points Gaussian Quadrature
+double quad7points(const std::function<double(const double&)>& fun, const double& ll, const double& hl) {
 	double integral = 0.0;
 	const double c1 = .5 * (hl - ll);
-	const double c2 = .5 * (hl + ll);
-	for (int i = 0; i < 15; i++) {
-		integral += KRONROD_WEIGHTS[i] * fun(c1 * KRONROD_NODES[i] + c2);
+	for (int i = 0; i < 7; i++) {
+		integral += GAUSS_WEIGHTS[i] * fun(c1 * GAUSS_NODES[i] + .5*(hl+ll));
 	}
 	return integral * c1;
 }
-
 
 #endif // QUAD_HPP
