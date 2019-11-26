@@ -41,17 +41,18 @@ public:
 
 	// Returns As(z)
 	virtual double As(const double& z) {
-		return quad15points(this->m_AsIntegrand, 0, z) * 2.0 * M_PI * z;
+		return quad15points(this->m_AsIntegrand, 0, z) * 2.0 * M_PI;
 	}
 
 	// Returns dAs(z)/dz
 	virtual double dAsdz(const double& z) {
-		return (As(m_h + z) - As(z - m_h)) / (2. * m_h);
+		//return (As(m_h + z) - As(z - m_h)) / (2. * m_h);
+		return 2.0 * M_PI * this->m_AsIntegrand(z);
 	}
 
 	// Returns PI* integral(ll, hl, F(z)^2)
 	virtual double Volume(const double& ll, const double& hl) {
-		return quad15points(this->m_VolumeIntegrand, ll, hl) * EIGEN_PI;
+		return quad15points(this->m_VolumeIntegrand, ll, hl) * M_PI;
 	}
 
 	// Return ID
