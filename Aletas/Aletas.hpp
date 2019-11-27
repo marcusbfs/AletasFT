@@ -153,7 +153,7 @@ public:
  }
  inline double Aleta::coeff_i(const uint& i) const
  {
-	 double C2 = m_h* m_As->der(this->get_z(i))/(  m_k);
+	 double C2 = m_h* m_As->der(this->get_z(i))/(m_k);
 	 return -2.0 * m_Ac->fun(this->get_z(i)) - m_delta * m_delta * C2;
  }
  inline double Aleta::coeff_i_plus_1(const uint& i) const
