@@ -109,9 +109,24 @@ public:
 		}
 		else {
 			// Version 2
-			m_A.insert(m_numberOfpoints - 1, m_numberOfpoints - 3) = m_k * .5;
-			m_A.insert(m_numberOfpoints - 1, m_numberOfpoints - 2) = -2.0 * m_k;
-			m_A.insert(m_numberOfpoints - 1, m_numberOfpoints - 1) = -m_h*m_delta + 3. * m_k * .5;
+			const double Ac = this->m_Ac->fun(this->get_z(m_numberOfpoints - 1));
+			const double dAc = this->m_Ac->der(this->get_z(m_numberOfpoints - 1));
+			const double dAs = this->m_As->fun(this->get_z(m_numberOfpoints - 1));
+			double c1, c2;
+
+			// if Ac == 0
+			if (std::abs(Ac) > 1e-10) {
+				c1 = 0.0;
+				c2 = 0.0;
+			}
+			else {
+				c1 = dAc / Ac;
+				c2 = dAs * m_h / (m_k * Ac);
+			}
+
+			const double delta2 = m_delta * m_delta;
+			m_A.insert(m_numberOfpoints - 1, m_numberOfpoints - 2) = 2 / delta2;
+			m_A.insert(m_numberOfpoints - 1, m_numberOfpoints - 1) = (-2 - 2 * m_delta * m_h / m_k) / delta2 + c2 - c1 * m_h / m_k;
 		}
 	}
 
