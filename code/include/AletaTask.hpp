@@ -41,7 +41,7 @@ public:
 
 	// Returns As(z)
 	virtual double As(const double& z) {
-		return quad15points(this->m_AsIntegrand, 0, z) * 2.0 * M_PI;
+		return quad15points(this->m_AsIntegrand, 0, static_cast<double>(z)) * 2.0 * M_PI;
 	}
 
 	// Returns dAs(z)/dz
@@ -57,13 +57,16 @@ public:
 
 	// Return ID
 	virtual std::string ID() = 0;
+
+	// destructor
+	virtual ~AletaTaskInput() {};
 };
 
 class AcWrapper : public FunDer {
 private:
-	std::shared_ptr<AletaTaskInput> m_Fz;
+	AletaTaskInput* m_Fz;
 public:
-	AcWrapper(const std::shared_ptr<AletaTaskInput>& f)
+	AcWrapper(AletaTaskInput* f)
 		: m_Fz(f) {}
 
 	// Returns the function value
@@ -79,9 +82,9 @@ public:
 
 class AsWrapper : public FunDer {
 private:
-	std::shared_ptr<AletaTaskInput> m_Fz;
+	AletaTaskInput* m_Fz;
 public:
-	AsWrapper(const std::shared_ptr<AletaTaskInput>& f)
+	AsWrapper(AletaTaskInput* f)
 		: m_Fz(f) {}
 
 	// Returns the function value
@@ -98,9 +101,9 @@ public:
 
 class VolumeWrapper : public FunDer {
 private:
-	std::shared_ptr<AletaTaskInput> m_Fz;
+	AletaTaskInput* m_Fz;
 public:
-	VolumeWrapper(const std::shared_ptr<AletaTaskInput>& f)
+	VolumeWrapper(AletaTaskInput* f)
 		: m_Fz(f) {}
 
 	// Returns the function value
@@ -120,20 +123,28 @@ public:
 	Aleta m_aleta; 
 	double Tinf = ft_Tinf;
 	double T0 = ft_T0;
-	std::shared_ptr<AletaTaskInput> m_geratriz;
+	AletaTaskInput* m_geratriz;
 	Eigen::VectorXd m_Theta;
 	Eigen::VectorXd m_T;
+private:
+	std::unique_ptr<AcWrapper> m_Ac;
+	std::unique_ptr<AsWrapper> m_As;
+	std::unique_ptr<VolumeWrapper> m_Volume;
 
 public:
 	//AletaTask(const std::shared_ptr<FunDer>& Fz, const std::shared_ptr<FunDer>& As) {
 	AletaTask(const uint numberOfPoints,
-		const std::shared_ptr<AletaTaskInput>& geratriz)
+		AletaTaskInput* geratriz)
 		: m_geratriz(geratriz)
 	{
 		// Initialize functions
-		m_aleta.setAc(std::make_shared<AcWrapper>(m_geratriz));
-		m_aleta.setAs(std::make_shared<AsWrapper>(m_geratriz));
-		m_aleta.setVol(std::make_shared<VolumeWrapper>(m_geratriz));
+		m_Ac = std::make_unique<AcWrapper>(m_geratriz);
+		m_As = std::make_unique<AsWrapper>(m_geratriz);
+		m_Volume = std::make_unique<VolumeWrapper>(m_geratriz);
+
+		m_aleta.setAc(m_Ac.get());
+		m_aleta.setAs(m_As.get());
+		m_aleta.setVol(m_Volume.get());
 
 		// Parameters
 		m_aleta.setD(ft_D);
@@ -189,6 +200,13 @@ public:
 
 		file.open(filename);
 
+		file << 
+			std::setw(20) << "Position" <<
+			std::setw(20) << "Temperature" <<
+			std::setw(20) << "Flux" <<
+			std::setw(20) << "Flux derivative" <<
+			std::setw(20) << "Volume" <<
+			std::endl;
 		for (size_t i = 0; i < T.size(); i++) {
 			file << std::fixed <<
 				std::setprecision(10) << 

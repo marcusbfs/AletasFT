@@ -1,70 +1,44 @@
-#include <iostream>
 #include <memory>
-#include <vector>
-#include <sstream>
-#include "Eigen/Dense"
-#include "Aletas.hpp"
-#include "AletaTask.hpp"
-#include "FunDer.hpp"
-#include "GeratrizesTask.hpp"
+#include <Array>
+#include <string>
 
-void test_AletaTask(const int& nop);
+#include "AletaTask.hpp"
+#include "GeratrizesTask.hpp"
 
 int main(int argc, char** argv)
 {
-	int n;
-	if (argc > 1) {
-		std::stringstream strm(argv[1]);
-		strm >> n;
-	}
-	else
-		n = 9;
+	const int numberOfPoints = argc > 1 ? atoi(argv[1]) : 9;
 
-	test_AletaTask(n);
-}
-
-void test_AletaTask(const int& nop )
-{
-	const int numberOfPoints = nop;
-	std::unique_ptr<AletaTask> aleta;
-	std::vector<std::shared_ptr<AletaTaskInput>> geratrizes;
+	std::array<std::unique_ptr<AletaTaskInput>, 13> geratrizes;
 	std::string filename;
-	Eigen::VectorXd T;
 
 	// ========== Altere aqui! ==========
-#pragma region  Geratrizes
-	geratrizes.push_back(std::make_shared<GeratrizA>());
-	geratrizes.push_back(std::make_shared<GeratrizB>());
-	geratrizes.push_back(std::make_shared<GeratrizC>());
-	geratrizes.push_back(std::make_shared<GeratrizD>());
-	geratrizes.push_back(std::make_shared<GeratrizE>());
-	geratrizes.push_back(std::make_shared<GeratrizF>());
-	geratrizes.push_back(std::make_shared<GeratrizG>());
-	geratrizes.push_back(std::make_shared<GeratrizH>());
-	geratrizes.push_back(std::make_shared<GeratrizI>());
-	geratrizes.push_back(std::make_shared<GeratrizJ>());
-	geratrizes.push_back(std::make_shared<GeratrizK>());
-	geratrizes.push_back(std::make_shared<GeratrizL>());
-	geratrizes.push_back(std::make_shared<GeratrizM>());
-#pragma endregion
+	geratrizes[0]  = std::make_unique<GeratrizA>();
+	geratrizes[1]  = std::make_unique<GeratrizB>();
+	geratrizes[2]  = std::make_unique<GeratrizC>();
+	geratrizes[3]  = std::make_unique<GeratrizD>();
+	geratrizes[4]  = std::make_unique<GeratrizE>();
+	geratrizes[5]  = std::make_unique<GeratrizF>();
+	geratrizes[6]  = std::make_unique<GeratrizG>();
+	geratrizes[7]  = std::make_unique<GeratrizH>();
+	geratrizes[8]  = std::make_unique<GeratrizI>();
+	geratrizes[9]  = std::make_unique<GeratrizJ>();
+	geratrizes[10] = std::make_unique<GeratrizK>();
+	geratrizes[11] = std::make_unique<GeratrizL>();
+	geratrizes[12] = std::make_unique<GeratrizM>();
 
-	// ==== n�o altere mais! ======= !
+	 //==== nao altere mais! ======= !
 
-	// Para cada geratriz
-	for (int i = 0; i < geratrizes.size(); i++) {
-		aleta = std::make_unique<AletaTask>(numberOfPoints, geratrizes[i]);
+	 //Para cada geratriz
+	for (const auto& geratriz : geratrizes) {
 
-		aleta->build();
-		aleta->solve();
-		T = aleta->getT();
+		AletaTask aleta(numberOfPoints, geratriz.get());
 
-		//std::cout << "Geratriz " << aleta->ID() << std::endl;
-		//std::cout << T << std::endl;
-		//std::cout << aleta->getA() << std::endl;
-		//std::cout << "\n " <<   std::endl;
+		aleta.build();
+		aleta.solve();
 
-		filename = "geratriz_" + aleta->ID() + ".txt";
-		aleta->writeDataToFile(filename);
-		aleta.release();
+		filename = "geratriz_" + aleta.ID() + ".txt";
+
+		aleta.writeDataToFile(filename);
 	}
 }

@@ -1,7 +1,6 @@
 #ifndef ALETAS_HPP
 #define ALETAS_HPP
 
-#include <memory>
 #include "Eigen/Dense"
 #include "Eigen/Sparse"
 #include "FunDer.hpp"
@@ -16,7 +15,7 @@ protected:
 	//Eigen::MatrixXd m_A;
 	Eigen::SparseMatrix<double> m_A;
 	Eigen::VectorXd m_b, m_x;
-	std::shared_ptr<FunDer> m_Ac, m_As, m_vol;
+	FunDer* m_Ac, *m_As, *m_vol;
 
 	// Private functions
 	inline double coeff_i_minus_1(const uint& i) const;
@@ -47,11 +46,11 @@ public:
 	void setBoundaryConditions(const double& theta_a, const double& theta_b);
 
 	// Set Ac
-	void setAc(const std::shared_ptr<FunDer>& Ac);
+	void setAc(FunDer* Ac);
 	// Set As
-	void setAs(const std::shared_ptr<FunDer>& As);
+	void setAs(FunDer* As);
 	// Set Volume
-	void setVol(const std::shared_ptr<FunDer>& vol);
+	void setVol(FunDer* vol);
 	// Set k
 	void setk(const double& k);
 	// Set h
@@ -138,18 +137,9 @@ public:
 	}
 	//m_A.makeCompressed();
 
-	// Fill dense matrix
-	//for (uint i = 1; i < m_numberOfpoints - 1; i++) {
-	//	m_A(i, i - 1) = this->coeff_i_minus_1(i);
-	//	m_A(i, i) = this->coeff_i(i);
-	//	m_A(i, i + 1) = this->coeff_i_plus_1(i);
-	//}
 }
 
  void Aleta::solve() {
-	 // Solves system of algebraic equations
-	 //m_x = m_A.fullPivHouseholderQr().solve(m_b);
-	 //Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
 	 Eigen::BiCGSTAB<Eigen::SparseMatrix<double>, Eigen::IncompleteLUT<double>> solver;
 	 solver.compute(m_A);
 	 m_x = solver.solve(m_b);
@@ -235,17 +225,17 @@ inline void Aleta::setBoundaryConditions(const double& theta_a, const double& th
 	m_theta_b = theta_b;
 }
 
-inline void Aleta::setAc(const std::shared_ptr<FunDer>& Ac)
+inline void Aleta::setAc(FunDer* Ac)
 {
 	m_Ac = Ac;
 }
 
-inline void Aleta::setAs(const std::shared_ptr<FunDer>& As)
+inline void Aleta::setAs(FunDer* As)
 {
 	m_As = As;
 }
 
-inline void Aleta::setVol(const std::shared_ptr<FunDer>& vol)
+inline void Aleta::setVol(FunDer* vol)
 {
 	m_vol = vol;
 }
